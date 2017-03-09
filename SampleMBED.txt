@@ -1,0 +1,65 @@
+
+#include "mbed.h"
+#include "rtos.h"
+#include "Servo.h"
+#include "C12832.h"   // Library for SPI based LCD
+
+// PWM Signal
+Servo myservo1(p21);
+Servo myservo2(p22);
+Servo myservo3(p23);
+//LCD 
+C12832 lcd(p5, p7, p6, p8, p11); 
+//Serial
+Serial  pc(USBTX, USBRX);
+
+Thread thread;
+
+char *strg;
+char buffer[128];
+int f,d,x,y;
+
+void face_thread() {
+    while (true) {
+        pc.gets(buffer,18);  
+        strg = strtok(buffer, "'' Fxyd");
+        //f = atoi(strg)
+        //strg = strtok(NULL, " '' Fxyd");
+        //myservo1.write(175);
+        //myservo2.write(0);
+        //Thread::wait(1000);
+        }
+    }
+void motor_pan() {
+    while (true) {
+        x = atoi(strg);
+        strg = strtok(NULL, "'' Fxyd");
+        myservo1.write(x+80);
+        Thread::wait(1000);
+        }
+    }
+void motor_tilt() {
+    while (true) {
+        y = atoi(strg);
+        strg = strtok(NULL, "'' Fxyd");
+        myservo2.write(y+80);
+        Thread::wait(1000);
+        }
+    }
+void motor_tiltd() {
+    while (true) {
+        d = atoi(strg);
+        strg = strtok(NULL, "'' Fxyd");
+        //myservo3.write(y+80);
+        Thread::wait(1000); 
+        }
+    }    
+
+int main() { 
+    Thread thread0(face_thread);
+    Thread thread1(motor_pan);
+    Thread thread2(motor_tilt);
+    Thread thread3(motor_tiltd);
+    while (true) {
+        }
+    }
